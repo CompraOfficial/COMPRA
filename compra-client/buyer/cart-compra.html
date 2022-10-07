@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html data-wf-page="62da9e4a5e4a27deb82f00e6" data-wf-site="62da9e495e4a27647f2f00aa" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cart | COMPRA </title>
+  <meta content="Startup Template - compra Responsive Website Template" name="description">
+  <meta content="Home" property="og:title">
+  <meta content="Home" property="twitter:title">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="compra" name="generator">
+  <link href="../css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="../css/compra.css" rel="stylesheet" type="text/css">
+  <link href="../css/compra-client.compra.css" rel="stylesheet" type="text/css">
+  <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
+  <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+  <link href="../images/favicon.jpg" rel="shortcut icon" type="image/x-icon">
+  <link href="../images/webclip.jpg" rel="apple-touch-icon">
+  <!-- Local Routing -->
+  <script src="../js/local_routes.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script>
+    var totalDelFee = 0;
+    var overallTotal = 0;
+    var bAddress = window.localStorage.getItem('address').split(", ")[2];
+    var cart_prodcuts = [];
+    var cart_del_fee = [];
+
+    $(document).ready(function(){
+      // get cart
+      var dataForm = new FormData();
+      dataForm.append("bId", window.localStorage.getItem('user_id'));
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", BUYER_API.GET_CART);
+      xhr.onload = function(){
+        var result = JSON.parse(this.response)
+        console.log(result)
+        if(result != "Nothing is In the Cart"){
+          for (const cart of result) {
+            var pAddress = cart.address.split(", ")[2];
+            var delFee = 0;
+            if(pAddress == bAddress){
+              delFee = cart.deli_fee_within;
+            }else{
+              delFee = cart.deli_fee_outside;
+            }
+            // save datas
+            cart_prodcuts.push(cart.cart_id)
+            cart_del_fee.push(delFee)
+            var subtotal = ((cart.quantity * cart.price)+parseFloat(delFee)).toFixed(2)
+            overallTotal += parseFloat(subtotal)
+            totalDelFee += parseFloat(delFee)
+            $('#cart-output-1').append(
+              '<div class="table-cart-row">' +
+                '<div class="product-col">' +
+                  '<div class="content-vcenter align-top">' +
+                    '<img src="http://localhost/compra/compra-backend/api/trader/uploads/products/'+cart.img1+'" loading="lazy" alt="" class="cart-img-prod">' +
+                    '<div class="content-left">' +
+                      '<h3 class="h3 cart">'+cart.product_name+'</h3>' +
+                      '<p class="text-gray small-text text-left">'  +
+                        'Category: ' + cart.category + '<br/>' +
+                        'Type: ' + cart.product_type + '<br/>' +
+                        'Moisture: ' + cart.moisture + '<br/>' +
+                        'Age: ' + cart.age +
+                      '</p>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="quantity-col content-center">' +
+                ' <div class="h3 cart">'+cart.quantity+'</div>' +
+              ' </div>' +
+                '<div class="price-col content-center">' +
+                  '<div class="h3 cart">₱'+cart.price+' per '+cart.unit_measurement+'</div>' +
+                '</div>' +
+              ' <div class="price-col content-center">' +
+                  '<div class="h3 cart">₱'+delFee+'</div>' +
+                '</div>' +
+                '<div class="amount-col content-center">' +
+                  '<div class="h3 cart">₱'+subtotal+'</div>' +
+                '</div>' +
+                '<div class="setting-col content-center">' +
+                  '<a href="#" id="pId-'+cart.product_id+'" class="button style2 remove-cart w-button removeCart"><span class="fa-icon"></span></a>' +
+                '</div>' +
+              '</div>'
+            ); 
+            $('.removeCart').click(function(){
+              var pId = this.id.split('-')[1]
+              var dataForm = new FormData();
+              dataForm.append("bId", window.localStorage.getItem('user_id'));
+              dataForm.append("pId", pId);
+              var xhr = new XMLHttpRequest();
+              xhr.open("POST", BUYER_API.REMOVE_CART);
+              xhr.onload = function(){
+                console.log(this.response)
+                alert(this.response)
+                location.reload()
+              }
+              xhr.send(dataForm); 
+            })
+
+            $('.cart-output-2').append(
+              '<div class="content-hbetween">' +
+                '<div class="flex-h">' +
+                  '<img src="http://localhost/compra/compra-backend/api/trader/uploads/products/'+cart.img1+'" loading="lazy" alt="" class="cart-img-prod">' +
+                  '<div class="content-left mr-1">' +
+                    '<h3 class="h3 cart">'+cart.product_name+'</h3>' +
+                    '<p class="text-gray small-text text-left">'+
+                      'Category: ' + cart.category + '<br/>' +
+                      'Type: ' + cart.product_type + '<br/>' +
+                      'Moisture: ' + cart.moisture + '<br/>' +
+                      'Age: ' + cart.age +
+                    '</p>' +
+                ' </div>' +
+                '</div>' +
+                '<div class="content-center">' +
+                  '₱' + subtotal +
+                '</div>'+
+              '</div>'
+            ); 
+          }
+          $('.overallTotal').html('₱'+overallTotal)
+          console.log(cart_prodcuts)
+
+        }
+
+      }
+      xhr.send(dataForm); 
+
+      $('#rName').val(window.localStorage.getItem('owner'));
+      $('#aEmail').val(window.localStorage.getItem('email'));
+      $('#cNum').val(window.localStorage.getItem('phone'));
+      $('#addr').val(window.localStorage.getItem('address').split(', ')[0]);
+      $('#aBara').val(window.localStorage.getItem('address').split(', ')[1]);
+      $('#aCity').val(window.localStorage.getItem('address').split(', ')[2]);
+      $('#aZip').val(window.localStorage.getItem('address').split(', ')[3]);
+
+      // proceed Button
+      $('#proceedBtn').click(function(){
+        $('#shipInfo').html(
+          $('#rName').val() + '<br/>' +
+          $('#aEmail').val() + '<br/>' +
+          $('#cNum').val() + '<br/>' +
+          $('#addr').val() + '<br/>' +
+          $('#aBara').val() + '<br/>' +
+          $('#aCity').val() + '<br/>' +
+          $('#aZip').val() + '<br/>' +
+          $('#buyerType').val() + '<br/>'
+        )
+      })
+
+      // order button
+      $('#placeOrderBtn').click(function(){
+        // add shipping info
+        var dataForm = new FormData();
+        dataForm.append("rName", $('#rName').val());
+        dataForm.append("aEmail", $('#aEmail').val());
+        dataForm.append("cNum", $('#cNum').val());
+        dataForm.append("addr", $('#addr').val());
+        dataForm.append("aBara", $('#aBara').val());
+        dataForm.append("aCity", $('#aCity').val());
+        dataForm.append("aZip", $('#aZip').val());
+        dataForm.append("buyerType", $('#buyerType').val());
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", BUYER_API.ADD_ADDRESS_INFO);
+        xhr.onload = function(){
+          // purchase cart
+          var dataForm = new FormData();
+          dataForm.append("cart_products", JSON.stringify(cart_prodcuts) );
+          dataForm.append("cart_del_fee", JSON.stringify(cart_del_fee) );
+          dataForm.append("aId", this.response );
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", BUYER_API.PURCHASE_CART);
+          xhr.onload = function(){
+            console.log(this.response)
+            location.href="purchase-compra.html"
+          }
+          xhr.send(dataForm);
+        }
+        xhr.send(dataForm); 
+
+         
+      })
+
+    })
+    
+  </script>
+
+</head>
+<body>
+  <div class="flex-v _100vh">
+    <!-- navbar -->
+    <div class="navbar abs-top non-home">
+      <div class="container">
+        <div class="nav-content">
+          <div class="nav-left-content"><img src="../images/noname123.png" loading="lazy" alt="" class="nav-logo">
+            <a href="../buyer/buyer-home-compra.html" class="nav-link">Home</a>
+            <a href="../buyer/shopping-compra.html" class="nav-link">Shop</a>
+            <a href="../buyer/favorites-compra.html" class="nav-link">Favorites</a>
+            <a href="../buyer/bidding-compra.html" class="nav-link">Bidding</a>
+            <a href="../buyer/subscription-compra.html" class="nav-link">Subscription</a>
+          </div>
+          <div class="nav-right-content">
+            <a href="../buyer/notification-compra.html" class="nav-link fa-icon"></a>
+            <a href="../buyer/cart-compra.html" aria-current="page" class="nav-link fa-icon w--current"></a>
+            <div data-w-id="aa70e902-2f0f-387f-8368-e2bc6663a557" class="profile-dropdown">
+              <a href="#" class="nav-link mr-0 fa-icon"></a>
+              <div class="dropdown-content">
+                <div class="flex-v">
+                  <div class="setting-cat">user settings</div>
+                  <a href="../buyer/edit-profile-compra.html" class="content-vcenter no-dec mb-1 w-inline-block">
+                    <div class="profile-pic mr-1"><img src="../images/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" loading="lazy" alt="" class="profile-image"></div>
+                    <div>
+                      <div class="us-name">[Full name]</div>
+                      <div class="text-gray small-text">Edit Profile Details</div>
+                    </div>
+                  </a>
+                </div>
+                <a href="../buyer/chat-compra.html" class="content-vcenter mb-1 no-dec w-inline-block">
+                  <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
+                  <div><strong class="black-text">Chats</strong></div>
+                </a>
+                <a href="../buyer/order-history-compra.html" class="content-vcenter mb-1 no-dec w-inline-block">
+                  <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
+                  <div><strong class="black-text">Order History</strong></div>
+                </a>
+                <a href="../buyer/edit-shipping-info-compra.html" class="content-vcenter mb-1 no-dec w-inline-block">
+                  <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
+                  <div><strong class="black-text">Shipping Info</strong></div>
+                </a>
+                <a href="#" class="content-vcenter no-dec w-inline-block">
+                  <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
+                  <div><strong class="black-text">Logout</strong></div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- main section -->
+    <div class="section small cart relative">
+      <div class="container">
+        <div>
+          <h1 class="h1 gen">Cart</h1>
+          <div class="table-cart">
+
+            <div class="table-heading">
+              <div class="product-col">
+                <div class="cart-table-heading text-left">Product</div>
+              </div>
+              <div class="quantity-col">
+                <div class="cart-table-heading">Quantity</div>
+              </div>
+              <div class="price-col">
+                <div class="cart-table-heading">Price</div>
+              </div>
+              <div class="price-col">
+                <div class="cart-table-heading">Delivery</div>
+              </div>
+              <div class="amount-col">
+                <div class="cart-table-heading">Amount</div>
+              </div>
+              <div class="setting-col"></div>
+            </div>
+
+            <div class="cart-output" id="cart-output-1">
+              <!-- cart output -->
+              
+
+            </div>
+          </div>
+
+          <!-- Total -->
+          <div class="mb-3">
+            <div class="table-heading">
+              <div class="product-col"></div>
+              <div class="quantity-col"></div>
+              <div class="price-col"></div>
+              <div class="price-col">
+                <div class="text-right"><strong>Delivery:</strong></div>
+              </div>
+              <div class="amount-col">
+                <strong>
+                  <div class="overallTotal">00.00</div>
+                </strong>
+              </div>
+              <div class="setting-col"></div>
+            </div>
+          </div>
+          <div class="content-right">
+            <div class="content-vcenter">
+              <a data-w-id="e34ac867-24f9-8702-c791-971d0dfee9c8" href="#" class="button proceed w-button">CHECK OUT</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- shipping section -->
+      <div class="shipping-pay-sec">
+        <div class="container">
+          <div>
+            <a data-w-id="85fabc1e-7b9c-c674-9660-387de8aefa04" href="#" class="back-link"><span class="fa-icon"></span> Back</a>
+            <h1 class="h1 gen text-black">Shipping and Payment</h1>
+            <div class="shippay-grid">
+              <div id="w-node-c7806dfe-1e36-2101-8946-5590a6a1a503-b82f00e6">
+
+                <h2 class="h2 shippay">Shipping information</h2>
+
+                <div class="w-form">
+
+                  <div id="email-form">
+                    <input type="text" id="rName" class="text-field w-input" maxlength="256" placeholder="Receiver Name" required="">
+                    <input type="text" id="aEmail" class="text-field w-input" maxlength="256" placeholder="Email" required="">
+                    <input type="text" id="cNum" class="text-field w-input" maxlength="256" placeholder="Contact Number" required="">
+                    <input type="text" id="addr" class="text-field w-input" maxlength="256" placeholder="Address" required="">
+                    <input type="text" id="aBara" class="text-field w-input" maxlength="256" placeholder="Barangay" required="">
+                    <input type="text" id="aCity" class="text-field w-input" maxlength="256" placeholder="City/Province" required="">
+                    <input type="text" id="aZip" class="text-field w-input" maxlength="256" placeholder="ZIP Code" required="">
+
+                    <select id="buyerType" name="buyer-type" data-name="buyer type" required="" class="text-field w-select">
+                      <option value="Small Copra Buyer">Small Copra Buyer</option>
+                      <option value="Medium Copra Buyer">Medium Copra Buyer</option>
+                      <option value="Large Copra Buyer">Large Copra Buyer</option>
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+
+              <div id="w-node-_6f70aac5-0f2e-aef9-0cf4-26822143b884-b82f00e6">
+                <h2 class="h2 shippay">Payment method</h2>
+                <div class="content-vcenter wrap">
+                  <div class="pm-rb">Cash On Delivery</div>
+                </div>
+              </div>
+              
+              <div id="w-node-_90ee817d-c6db-cac3-594b-69ab2452a570-b82f00e6">
+                <h2 class="h2 shippay">Your cart</h2>
+                <div class="cart-output mb-2 cart-output-2">
+                  <!-- cart output -->
+                  
+                </div>
+
+                <div class="content-right">
+                  <div class="content-vcenter">
+                    <div class="no-wrap">Total: <strong class="overallTotal">P 52.00</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-right">
+              <div class="content-vcenter">
+                <a data-w-id="7db6d05d-49cb-ec46-53cd-096998eb2c36" href="#" id="proceedBtn" class="button proceed w-button">PROCEED</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- summary section -->
+      <div class="summary-cart">
+        <div class="container">
+          <div>
+            <a data-w-id="ba35b6b3-6fcd-a286-e0f3-ade573cdf090" href="#" class="back-link"><span class="fa-icon"></span> Back</a>
+            <h1 class="h1 gen text-black">Summary</h1>
+            <div class="shippay-grid mb-3">
+              <div id="w-node-ba35b6b3-6fcd-a286-e0f3-ade573cdf0b0-b82f00e6">
+                <h2 class="h2 shippay">Your cart</h2>
+                <div class="cart-output mb-2 cart-output-2">
+                  <!-- cart output -->
+
+                </div>
+                
+                <div class="content-right">
+                  <div class="content-vcenter">
+                    <div class="no-wrap">Total: <strong class="overallTotal">P 52.00</strong></div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="w-node-ba35b6b3-6fcd-a286-e0f3-ade573cdf0aa-b82f00e6">
+                <h2 class="h2 shippay">Payment method</h2>
+                <div class="content-vcenter wrap">
+                  <div class="pm-rb">Cash On Delivery</div>
+                </div>
+              </div>
+              <div id="w-node-ba35b6b3-6fcd-a286-e0f3-ade573cdf097-b82f00e6">
+                <h2 class="h2 shippay">Shipping information</h2>
+                <div id="shipInfo">[SHIPPING INFO]</div>
+              </div>
+            </div>
+
+            <div class="content-right">
+              <div class="content-vcenter">
+                <a href="#" id="placeOrderBtn" class="button proceed w-button">PALCE ORDER</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=62da9e495e4a27647f2f00aa" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="../js/compra.js" type="text/javascript"></script>
+  <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+</body>
+</html>
