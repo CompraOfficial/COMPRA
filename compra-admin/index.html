@@ -26,8 +26,8 @@
       <h1 class="h1 text-center"><span class="fa-icon"></span> Admin Login</h1><img src="images/632772364d23be10453c499a_logo-copra-1.jpg" loading="lazy" alt="" class="login-logo">
       <div class="w-form">
         <div id="email-form" name="email-form" data-name="Email Form" method="get">
-          <input type="text" id="login-email" class="text-field mb-1 w-input" maxlength="256" name="field" data-name="" placeholder="Username">
-          <input type="password" id="login-password" class="text-field mb-2 w-input" maxlength="256" name="field" data-name="" placeholder="Password" required="">
+          <input type="text" id="login-email" class="text-field mb-1 w-input" maxlength="256" placeholder="Email">
+          <input type="password" id="login-password" class="text-field mb-2 w-input" maxlength="256"  placeholder="Password" required="">
           <div class="block-centered">
             <input type="button" id="login-button" value="Login" data-wait="Please wait..." class="button login w-button">
           </div>
@@ -45,6 +45,11 @@
 
 <script>
   $(document).ready(function(){
+    
+    if(window.localStorage.getItem('email') != null){
+      location.href = "dashboard.html";
+    }
+
 
     $("#login-button").click(function(){
       var loginEmail = $('#login-email').val();

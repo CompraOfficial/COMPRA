@@ -31,10 +31,11 @@
                     null,
                     {$cart},
                     '{$aId}',
-                    '".$product_name."<br/>".$category."<br/>".$product_type."<br/>".$moisture."<br/>".$age."',
+                    '".$product_name."<br/>Category: ".$category."<br/>Type: ".$product_type."<br/>Moisture: ".$moisture."<br/>Age: ".$age." month/s',
                     '".$cart_del_fee[$count]."',
                     '" . ($price * $quantity) . "',
                     'COD',
+                    'PENDING',
                     NOW()
                 )"
             );

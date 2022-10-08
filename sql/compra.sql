@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 07, 2022 at 05:14 PM
+-- Generation Time: Oct 08, 2022 at 01:36 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -39,6 +39,15 @@ CREATE TABLE `address` (
   `country` varchar(100) NOT NULL,
   `buyer_type` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `address`
+--
+
+INSERT INTO `address` (`address_id`, `receiver`, `email`, `phone`, `address`, `barangay`, `city`, `postal`, `country`, `buyer_type`) VALUES
+('63407a520eac9', 'alberto maximum', '321@321.32', '32', 'b1 address', 'brangay', 'city', 'zip', 'Philippines', 'Small Copra Buyer'),
+('63407b70b9b1d', 'alberto maximum', '321@321.32', '32', 'b1 address', 'brangay', 'city', 'zip', 'Philippines', 'Small Copra Buyer'),
+('6340a949c6ae0', '', 'admin@gmail.com', '23', '23', '', '', '', 'Philippines', 'Small Copra Buyer');
 
 -- --------------------------------------------------------
 
@@ -105,9 +114,9 @@ CREATE TABLE `buyer` (
 
 INSERT INTO `buyer` (`buyer_id`, `owner`, `company`, `phone`, `address`, `email`, `password`, `created_at`, `status`) VALUES
 (1, 'jan jan rojas', 'rojhas company', '123', 'address, barangay, city, zip', '23@gmail.com', '123', '2022-10-04 03:23:43', 'activated'),
-(2, 'alberto maximum', '321', '32', 'b1 address, brangay, city, zip', '321@321.32', '321', '2022-10-04 03:23:39', 'banned'),
-(3, 'elsa mcqueen', '5435345', '5435', 'a address, brangay, city, zip', '345345@543.fds', 'rwer', '2022-10-04 03:25:06', 'pending'),
-(4, 'john robero', '4214521', '521521', 'd address, brangay, city, zip', '21525@5325.5325', '123', '2022-10-04 03:25:06', 'rejected');
+(2, 'alberto maximum', 'James Yap Corp.', '09123456789', 'b1 address, brangay, city, zip', 'yapyapJames@gmail.com', '123', '2022-10-04 03:23:39', 'activated'),
+(3, 'elsa mcqueen', '5435345', '5435', 'a address, brangay, city, zip', '345345@543.fds', 'rwer', '2022-10-04 03:25:06', 'rejected'),
+(4, 'john robero', '4214521', '521521', 'd address, brangay, city, zip', '21525@5325.5325', '123', '2022-10-04 03:25:06', 'pending');
 
 -- --------------------------------------------------------
 
@@ -188,22 +197,10 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cart_id`, `buyer_id`, `product_id`, `quantity`, `status`, `created_at`) VALUES
-(8, 1, 17, 23, 'IN CART', '2022-10-07 20:48:18'),
-(9, 1, 16, 13, 'IN CART', '2022-10-07 20:49:52'),
-(10, 1, 19, 6, 'IN CART', '2022-10-07 20:50:00');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `delivery_tracking`
---
-
-CREATE TABLE `delivery_tracking` (
-  `track_id` int(11) NOT NULL,
-  `purchase_id` int(11) NOT NULL,
-  `status` varchar(50) NOT NULL,
-  `created_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+(28, 2, 21, 6, 'PURCHASED', '2022-10-08 03:13:17'),
+(30, 2, 22, 1, 'PURCHASED', '2022-10-08 03:17:48'),
+(31, 2, 21, 4, 'PURCHASED', '2022-10-08 03:18:04'),
+(32, 1, 21, 1, 'PURCHASED', '2022-10-08 06:33:40');
 
 -- --------------------------------------------------------
 
@@ -223,8 +220,9 @@ CREATE TABLE `favorite_product` (
 --
 
 INSERT INTO `favorite_product` (`rp_id`, `buyer_id`, `product_id`, `created_at`) VALUES
-(16, 1, 17, '2022-10-07 08:05:26'),
-(18, 1, 16, '2022-10-07 08:05:37');
+(22, 2, 21, '2022-10-08 03:17:51'),
+(23, 2, 22, '2022-10-08 03:17:54'),
+(24, 1, 21, '2022-10-08 06:17:11');
 
 -- --------------------------------------------------------
 
@@ -244,7 +242,7 @@ CREATE TABLE `favorite_shop` (
 --
 
 INSERT INTO `favorite_shop` (`rs_id`, `buyer_id`, `trader_id`, `created_at`) VALUES
-(4, 1, 2, '2022-10-07 08:05:43');
+(5, 1, 2, '2022-10-08 06:19:47');
 
 -- --------------------------------------------------------
 
@@ -308,10 +306,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `trader_id`, `product_name`, `description`, `product_type`, `category`, `moisture`, `age`, `unit_measurement`, `price`, `stock`, `deli_fee_within`, `deli_fee_outside`, `status`, `img1`, `img2`, `img3`, `img4`, `created_at`) VALUES
-(16, 2, 'Dans Copra', '', 'Dried Copra', 'Copra', 'none', 1, 'Quantity', '20.00', 9999, '100.00', '250.00', 'IN STOCK', '633f0f794970c1.26157426.jpg', '633f47950da3f9.19708300.jpg', '633f4798240142.66118771.jpg', '', '2022-10-07 01:25:13'),
-(17, 2, 'copra324', '213123123', 'Dried Copra', 'Copra', 'none', 123, 'Kilogram', '213.00', 123, '123.00', '213.00', 'IN STOCK', '633f0f9b9569c7.29179871.jpg', '', '', '', '2022-10-07 01:25:47'),
-(18, 2, 'dandan123', '123', 'Dried Copra', 'Copra', 'none', 123, 'Quantity', '213.00', 123, '123.00', '123.00', 'DELETED', '633f30e301dad7.75159065.jpg', '633f382c738dd1.29535135.jpg', '', '', '2022-10-07 01:26:01'),
-(19, 2, '3123', '123', 'Cooked Copra', 'Copra', '1% - 25%', 1, 'Kilogram', '123.00', 123, '123.00', '250.00', 'IN STOCK', '633f23feeeb490.37788307.jpg', '', '', '', '2022-10-07 02:52:46');
+(21, 2, 'Dans Copra', '123', 'Dried Copra', 'Copra', 'none', 1, 'Quantity', '123.00', 123, '123.00', '123.00', 'IN STOCK', '63407a33b74ee2.36000262.jpg', '', '', '', '2022-10-08 03:12:51'),
+(22, 2, '321', '312', 'Dried Copra', 'Copra', 'none', 312, 'Quantity', '321.00', 312, '312.00', '312.00', 'IN STOCK', '63407a406fd715.88531513.jpg', '63407a406ff968.23104732.jpg', '', '', '2022-10-08 03:13:04');
 
 -- --------------------------------------------------------
 
@@ -327,8 +323,19 @@ CREATE TABLE `purchase` (
   `delivery_fee` decimal(10,2) NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `delivery_type` varchar(50) NOT NULL,
+  `status` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase`
+--
+
+INSERT INTO `purchase` (`purchase_id`, `cart_id`, `address_id`, `product_info`, `delivery_fee`, `price`, `delivery_type`, `status`, `created_at`) VALUES
+(48, 28, '63407a520eac9', 'Dans Copra<br/>Category: Copra<br/>Type: Dried Copra<br/>Moisture: none<br/>Age: 1 month/s', '123.00', '738.00', 'COD', 'PENDING', '2022-10-08 03:13:22'),
+(49, 30, '63407b70b9b1d', '321<br/>Category: Copra<br/>Type: Dried Copra<br/>Moisture: none<br/>Age: 312 month/s', '312.00', '321.00', 'COD', 'PENDING', '2022-10-08 03:18:08'),
+(50, 31, '63407b70b9b1d', 'Dans Copra<br/>Category: Copra<br/>Type: Dried Copra<br/>Moisture: none<br/>Age: 1 month/s', '312.00', '492.00', 'COD', 'DECLINED', '2022-10-08 03:18:08'),
+(51, 32, '6340a949c6ae0', 'Dans Copra<br/>Category: Copra<br/>Type: Dried Copra<br/>Moisture: none<br/>Age: 1 month/s', '123.00', '123.00', 'COD', 'PENDING', '2022-10-08 06:33:45');
 
 -- --------------------------------------------------------
 
@@ -393,9 +400,9 @@ CREATE TABLE `trader` (
 
 INSERT INTO `trader` (`trader_id`, `owner`, `company`, `phone`, `address`, `email`, `password`, `created_at`, `status`) VALUES
 (1, 'traderhon', '231', '231', 'tq1 address, brangay, city, zip', 'trader@gmail.com', '213', '2022-10-04 03:25:59', 'banned'),
-(2, 'jd trader', 'trder jd', 'jdjdjd', '32r address, brangay, cebu city, zip', 'jdjdjdj@jdj.jd', 'jdjd', '2022-10-04 03:25:51', 'activated'),
-(3, 'lean lean', 'lean leander', 'lean lean', 'max2 address, brangay, city, zip', 'leanlean@lean.lean', 'lean', '2022-10-04 03:27:08', 'pending'),
-(4, 'king', 'king', 'king', '09ew b1 address, brangay, city, zip', 'king@king.king', 'king', '2022-10-04 03:27:08', 'rejected');
+(2, 'jd the great', 'TRADER JD INC.', '09123456789', '32r address, brangay, cebu city, zip', 'jdjdjdj@gmail.com', '123', '2022-10-04 03:25:51', 'activated'),
+(3, 'lean lean', 'lean leander', 'lean lean', 'max2 address, brangay, city, zip', 'leanlean@lean.lean', 'lean', '2022-10-04 03:27:08', 'rejected'),
+(4, 'king', 'king', 'king', '09ew b1 address, brangay, city, zip', 'king@king.king', 'king', '2022-10-04 03:27:08', 'pending');
 
 -- --------------------------------------------------------
 
@@ -516,13 +523,6 @@ ALTER TABLE `cart`
   ADD PRIMARY KEY (`cart_id`),
   ADD KEY `buyer_id_constraints_for_card` (`buyer_id`),
   ADD KEY `product_id_constraints_for_card` (`product_id`);
-
---
--- Indexes for table `delivery_tracking`
---
-ALTER TABLE `delivery_tracking`
-  ADD PRIMARY KEY (`track_id`),
-  ADD KEY `purchase_id_constraints_for_delivery_tracking` (`purchase_id`);
 
 --
 -- Indexes for table `favorite_product`
@@ -663,25 +663,19 @@ ALTER TABLE `buyer_subscription`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `delivery_tracking`
---
-ALTER TABLE `delivery_tracking`
-  MODIFY `track_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `favorite_product`
 --
 ALTER TABLE `favorite_product`
-  MODIFY `rp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `rp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `favorite_shop`
 --
 ALTER TABLE `favorite_shop`
-  MODIFY `rs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `rs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `market_price`
@@ -699,13 +693,13 @@ ALTER TABLE `message`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `purchase`
 --
 ALTER TABLE `purchase`
-  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `recently_viewed`
@@ -783,12 +777,6 @@ ALTER TABLE `buyer_subscription`
 ALTER TABLE `cart`
   ADD CONSTRAINT `buyer_id_constraints_for_card` FOREIGN KEY (`buyer_id`) REFERENCES `buyer` (`buyer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `product_id_constraints_for_card` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `delivery_tracking`
---
-ALTER TABLE `delivery_tracking`
-  ADD CONSTRAINT `purchase_id_constraints_for_delivery_tracking` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`purchase_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `favorite_product`

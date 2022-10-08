@@ -20,6 +20,8 @@
 
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="../js/gen_function.js"></script>
+
 </head>
 <body>
   <div class="navbar abs-top buyer">
@@ -59,7 +61,7 @@
                 <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
                 <div><strong class="black-text">Pick-up Info</strong></div>
               </a>
-              <a href="#" class="content-vcenter no-dec w-inline-block">
+              <a href="#" onclick="logout()" class="content-vcenter no-dec w-inline-block">
                 <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
                 <div><strong class="black-text">Logout</strong></div>
               </a>
@@ -206,7 +208,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="footer-copy-right">
     <div class="block-centered">
       <div class="footer-logo-text">Created by compra ⓒ 2022 all rights reserved.</div>
@@ -219,7 +221,7 @@
       <div class="scroller-bar"></div>
     </div>
     <div class="scroll-text mt-1">05</div>
-  
+
   </div>
 
   <!-- ONBOARDING MODAL -->
@@ -252,6 +254,7 @@
   $(document).ready(function(){
 
     fetchProducts();
+    setUserProfileName();
 
     function fetchProducts(){
       var dataForm = new FormData();
@@ -270,13 +273,16 @@
           for(let productItem in parsedResponse){
 
           }
-
         }else{
-          alert('Nothing found.');
+          alert('No products found.');
         }
       }
-
       xhr.send(dataForm);
+    };
+
+    function setUserProfileName() {
+      var userProfileName = window.localStorage.getItem("owner");
+      $('div.us-name').text(userProfileName);
     };
 
     $("#login-button").click(function(){

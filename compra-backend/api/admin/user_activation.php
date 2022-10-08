@@ -15,9 +15,6 @@
         
         echo "Successfully {$stats}!";
 
-        echo "UPDATE {$uType}
-        SET status = '{$stats}'
-        WHERE {$uType}_id = {$uUserId}";
     }else {
         echo "Check your conenction!";
     }

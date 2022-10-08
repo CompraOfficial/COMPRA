@@ -2,7 +2,7 @@
 //Links for Trader Pages
 //Front-End
 let TRADER_PAGES = {
-    HOME: 'http://localhost/compra/compra-client/trader/trader-home-compra.php',
+    HOME: 'http://localhost/compra/compra-client/trader/trader-home-compra.html',
 
 };
 
@@ -26,6 +26,11 @@ let TRADER_API = {
     EDIT_PRODUCT_IMG: 'http://localhost/compra/compra-backend/Api/trader/edit_product_img.php',
     DELETE_PRODUCT_IMGS: 'http://localhost/compra/compra-backend/Api/trader/delete_product_imgs.php',
     DELETE_PRODUCT: 'http://localhost/compra/compra-backend/Api/trader/delete_product.php',
+    ORDERED_PRODUCTS: 'http://localhost/compra/compra-backend/Api/trader/ordered_products.php',
+    GET_ORDERED_PRODUCT: 'http://localhost/compra/compra-backend/Api/trader/get_ordered_product.php',
+    GET_ADDRESS: 'http://localhost/compra/compra-backend/Api/trader/get_address.php',
+    PURCHASE_ACTIVITY: 'http://localhost/compra/compra-backend/Api/trader/purchase_activity.php',
+    UPDATE_USER_INFO: 'http://localhost/compra/compra-backend/Api/trader/update_user_info.php',
 };
 
 let BUYER_API = {
@@ -44,4 +49,6 @@ let BUYER_API = {
     REMOVE_CART: 'http://localhost/compra/compra-backend/Api/buyer/remove_cart.php',
     ADD_ADDRESS_INFO: 'http://localhost/compra/compra-backend/Api/buyer/add_address_info.php',
     PURCHASE_CART: 'http://localhost/compra/compra-backend/Api/buyer/purchase_cart.php',
+    ORDER_HISTORY: 'http://localhost/compra/compra-backend/Api/buyer/order_history.php',
+    UPDATE_USER_INFO: 'http://localhost/compra/compra-backend/Api/buyer/update_user_info.php',
 }

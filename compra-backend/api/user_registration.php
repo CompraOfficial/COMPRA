@@ -35,7 +35,7 @@
         $owner = $_POST['owner'];
         $company = $_POST['company'];
         $phone = $_POST['phone'];
-        $address = $_POST['address'].' '.$_POST['barangay'].' '.$_POST['city'];
+        $address = $_POST['address'].'---'.$_POST['barangay'].'--'.$_POST['city'];
         $email = $_POST['email'];
         $password = $_POST['password'];
         $created_at = date('d-m-y h:i:s');
@@ -47,8 +47,10 @@
         $new_user->company = $company;
         $new_user->phone = $phone;
         $new_user->address = $address;
+        $new_user->email = $email;
         $new_user->password = $password;
         $new_user->created_at = $created_at;
+        $new_user->status = 'active';
 
         //Trader = 1, Buyer = 2 (User Type)
         $Trader_UserCode = 'Trader';
@@ -60,8 +62,8 @@
             registerBuyer($new_user);
         }else {
             //Unknown user type.
-            echo 'Something went wrong';
-            $GLOBALS['return_message'] = 500;
+            //echo 'Something went wrong';
+            $GLOBALS['return_message'] = 501;
         }
 
     }else{

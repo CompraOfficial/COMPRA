@@ -7,7 +7,7 @@
         $qty = clean($_POST['qty']);
         $bId = clean($_POST['bId']);
 
-        $checkCart = mysqli_query($GLOBALS['connection'], "SELECT *, cart.status AS cStatus FROM cart JOIN product ON product.product_id = cart.product_id WHERE cart.product_id = {$pId} AND buyer_id = {$bId}");
+        $checkCart = mysqli_query($GLOBALS['connection'], "SELECT *, cart.status AS cStatus FROM cart JOIN product ON product.product_id = cart.product_id WHERE cart.product_id = {$pId} AND buyer_id = {$bId} AND cart.status = 'IN CART'");
         if(mysqli_num_rows($checkCart) > 0){
             while($product = mysqli_fetch_array($checkCart)){
                 $sumQty = $product['quantity'] + $qty;

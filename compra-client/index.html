@@ -128,7 +128,7 @@
 
             <label class="w-checkbox">
               <div id="register-radio-buyer" class="w-checkbox-input w-checkbox-input--inputType-custom checkbox w--redirected-checked"></div>
-              <input type="radio" name="register-type" value="Buyer" style="opacity:0;position:absolute;z-index:-1"><span class="w-form-label">Compra Buyer</span>
+              <input type="radio" name="register-type" value="Buyer" checked="" style="opacity:0;position:absolute;z-index:-1"><span class="w-form-label">Compra Buyer</span>
             </label>
 
             <label class="w-checkbox">
@@ -264,6 +264,7 @@
   $(document).ready(function(){
 
     $("#login-button").click(function(){
+      // getting of datas from frontend
       var loginType = $("input[name='login-type']:checked").val();
       var loginEmail = $('#login-email').val();
       var loginPass = $('#login-password').val();
@@ -271,13 +272,15 @@
       var dataForm = new FormData();
 
       //Trader = 1, Buyer = 2 (User Type)
+      // data inputs for backend
       dataForm.append("usertype", loginType);
       dataForm.append("username", loginEmail);
       dataForm.append("password", loginPass);
 
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", USER_API.AUTH);
-      xhr.onload = function(){
+      var xhr = new XMLHttpRequest(); // request for back end
+      xhr.open("POST", USER_API.AUTH); // open connection for back end
+      xhr.onload = function(){ // return from backend
+        // this.response return data from back end
         if(this.response !== '404'){
           const parsedResponse = JSON.parse(this.response);
 
@@ -291,9 +294,10 @@
         }else{
           alert('Invalid user credentials!');
         }
+
       }
 
-      xhr.send(dataForm);
+      xhr.send(dataForm); // connect to backend
     });
 
     // login radio
@@ -345,16 +349,17 @@
         xhr.onload = function(){
           if (this.response === '404') {
             alert('Invalid Credentials!');
-          } else if (this.response === '500') {
+          } else if (this.response === '500' || this.response === '501') {
             alert('Something went wrong! Please try registering again!');
           } else {
             const parsedResponse = JSON.parse(this.response);
+            console.log(this.response);
+            console.log(parsedResponse);
             saveCredentialsToLocalStorage(parsedResponse);
             registerType == 'Trader' ? redirectToTraderPage() : redirectToBuyerPage();
           }
         }
         xhr.send(dataForm);
-
       }
     });
 

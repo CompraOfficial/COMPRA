@@ -17,7 +17,10 @@
   
   <!-- Local Routing -->
   <script src="../js/local_routes.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="../js/gen_function.js"></script>
+
 
   <script>
     $(document).ready(function(){
@@ -110,6 +113,7 @@
         if(qty-1 >= 1) $('#quantity').html(--qty);
       });
 
+      // add to card
       $('#addToCart').click(function(){
         var dataForm = new FormData();
 
@@ -173,7 +177,7 @@
                 <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
                 <div><strong class="black-text">Shipping Info</strong></div>
               </a>
-              <a href="#" class="content-vcenter no-dec w-inline-block">
+              <a href="#" onclick="logout()" class="content-vcenter no-dec w-inline-block">
                 <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
                 <div><strong class="black-text">Logout</strong></div>
               </a>

@@ -16,7 +16,10 @@
   <link href="../images/webclip.jpg" rel="apple-touch-icon">
   <!-- Local Routing -->
   <script src="../js/local_routes.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="../js/gen_function.js"></script>
+
   <script>
     // FAVORITE PRODUCT
     dataForm = new FormData();
@@ -28,7 +31,7 @@
       console.log(result)
       for (const product of result) {
         $('.product-fav-output').append(
-          '<div class="fav-wrapper">' +
+          '<a href="product-compra.html?pId='+product.product_id+'" class="fav-wrapper" style="text-decoration: none; color: black;">' +
             '<div class="content-vcenter">'+
               '<img src="../images/dried-coconut-copra-500x500.jpg" loading="lazy" alt="" class="fav-img">' +
               '<h3 class="h3 fav">'+product.product_name+'</h3>' +
@@ -37,7 +40,7 @@
               '<div class="text-gray small-text mr-1">'+product.created_at+'</div>' +
               '<div id="pId-'+product.product_id+'" class="fa-icon red favorite" style="cursor: pointer;"></div>' +
             '</div>' +
-          '</div>'
+          '</a>'
         ); 
       } 
       $('.favorite').click(function(){
@@ -87,7 +90,7 @@
       console.log(result)
       for (const shop of result) {
         $('.trader-fav-output').append(
-          '<div class="fav-wrapper">' +
+          '<a href="shop-compra.html?tid='+shop.trader_id+'" class="fav-wrapper" style="text-decoration: none; color: black;">' +
             '<div class="content-vcenter">'+
               '<img src="../images/dried-coconut-copra-500x500.jpg" loading="lazy" alt="" class="fav-img">' +
               '<h3 class="h3 fav">'+shop.company+'</h3>' +
@@ -96,7 +99,7 @@
               '<div class="text-gray small-text mr-1">'+shop.created_at+'</div>' +
               '<div id="tid-'+shop.trader_id+'" class="fa-icon red fav-shop" style="cursor: pointer;"></div>' +
             '</div>' +
-          '</div>'
+          '</a>'
         ); 
       }     
       $('.fav-shop').click(function(){
@@ -176,7 +179,7 @@
                 <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
                 <div><strong class="black-text">Shipping Info</strong></div>
               </a>
-              <a href="#" class="content-vcenter no-dec w-inline-block">
+              <a href="#" onclick="logout()" class="content-vcenter no-dec w-inline-block">
                 <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
                 <div><strong class="black-text">Logout</strong></div>
               </a>

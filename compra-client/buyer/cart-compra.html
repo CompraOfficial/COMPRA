@@ -18,7 +18,10 @@
   <link href="../images/webclip.jpg" rel="apple-touch-icon">
   <!-- Local Routing -->
   <script src="../js/local_routes.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="../js/gen_function.js"></script>
+
   <script>
     var totalDelFee = 0;
     var overallTotal = 0;
@@ -83,20 +86,6 @@
                 '</div>' +
               '</div>'
             ); 
-            $('.removeCart').click(function(){
-              var pId = this.id.split('-')[1]
-              var dataForm = new FormData();
-              dataForm.append("bId", window.localStorage.getItem('user_id'));
-              dataForm.append("pId", pId);
-              var xhr = new XMLHttpRequest();
-              xhr.open("POST", BUYER_API.REMOVE_CART);
-              xhr.onload = function(){
-                console.log(this.response)
-                alert(this.response)
-                location.reload()
-              }
-              xhr.send(dataForm); 
-            })
 
             $('.cart-output-2').append(
               '<div class="content-hbetween">' +
@@ -122,6 +111,20 @@
           console.log(cart_prodcuts)
 
         }
+        $('.removeCart').click(function(){
+          var pId = this.id.split('-')[1]
+          var dataForm = new FormData();
+          dataForm.append("bId", window.localStorage.getItem('user_id'));
+          dataForm.append("pId", pId);
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", BUYER_API.REMOVE_CART);
+          xhr.onload = function(){
+            console.log(this.response)
+            alert(this.response)
+            location.reload()
+          }
+          xhr.send(dataForm); 
+        })
 
       }
       xhr.send(dataForm); 
@@ -227,7 +230,7 @@
                   <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
                   <div><strong class="black-text">Shipping Info</strong></div>
                 </a>
-                <a href="#" class="content-vcenter no-dec w-inline-block">
+                <a href="#" onclick="logout()" class="content-vcenter no-dec w-inline-block">
                   <div class="us-icon"><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="image stretch-flow"></div>
                   <div><strong class="black-text">Logout</strong></div>
                 </a>
